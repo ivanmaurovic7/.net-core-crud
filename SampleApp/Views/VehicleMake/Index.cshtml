@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SampleApp.Models.VehicleMake>
+
+<h1>Vehicle Make</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+<p>
+    <input type="text" name="searchBy" value="@ViewData["currentFilter"]" placeholder="Search by Name" required />
+    <input type="submit" value="Search"> |
+    <a asp-action="Index">Back to Full List</a>
+</p>
+        </div>
+    </form>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortBy="id">
+                    @Html.DisplayNameFor(model => model.Id)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortBy="name">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortBy="abrv">
+                    @Html.DisplayNameFor(model => model.Abrv)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int i = 0;}
+        @foreach (var item in Model)
+        {
+            @if (i >= Convert.ToInt32(ViewData["pageIndex"]) * 3 - 3 && i < Convert.ToInt32(ViewData["pageIndex"]) * 3)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abrv)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+            i++;
+        }
+    </tbody>
+</table>
+
+<br />
+<span>Pages</span>
+<br />
+@{int y = 0;}
+@{int z = 1;}
+@foreach (var item in Model)
+{
+    if (y % 3 == 0)
+    {
+        <a asp-action="Index" asp-route-pageIndex="@z">@z</a>
+        z++;
+    }
+    y++;
+}
